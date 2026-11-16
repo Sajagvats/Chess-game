@@ -1,0 +1,6 @@
+{
+  "name": "Grandmaster Arena",
+  "description": "Competitive tournament chess arena with rated ELO matches, knockout championship brackets, dual Blitz/Bullet/Rapid clocks, and tactical evaluation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

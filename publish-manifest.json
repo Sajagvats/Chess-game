@@ -1,0 +1,122 @@
+{
+  "name": "Grandmaster Arena",
+  "slug": "grandmaster-arena",
+  "description": "Full-stack 3D/2D multiplayer chess arena with World League, Moradabad School/College/Companies Leagues, 5 AI levels, real-time WebSocket rooms, Firebase Google Sign-In, and Cloud SQL PostgreSQL.",
+  "architecture": {
+    "type": "full-stack",
+    "frontend": "React 19 + Vite 8 + Tailwind CSS 4 + Three.js",
+    "backend": "Node.js 22 + Express 4 + ws WebSockets",
+    "database": "PostgreSQL (Drizzle ORM)",
+    "auth": "Firebase Authentication (Google Sign-In)"
+  },
+  "runtime": {
+    "nodeVersion": ">=22.6.0",
+    "entryPoint": "server.ts",
+    "httpPortEnv": "PORT",
+    "defaultDevPort": 3000,
+    "websocketPath": "/ws",
+    "healthcheckPath": "/health"
+  },
+  "commands": {
+    "install": "npm install",
+    "dev": "npm run dev",
+    "build": "npm run build",
+    "start": "npm start",
+    "typecheck": "npm run lint",
+    "pushDatabaseSchema": "npx drizzle-kit push --config=src/db/drizzle.config.ts"
+  },
+  "databaseSchema": {
+    "orm": "drizzle-orm",
+    "dialect": "postgresql",
+    "schemaFile": "src/db/schema.ts",
+    "drizzleConfig": "src/db/drizzle.config.ts",
+    "tables": [
+      "users",
+      "wallet_transactions",
+      "moradabad_institutions",
+      "league_entries",
+      "match_history"
+    ]
+  },
+  "requiredEnvVars": [
+    {
+      "name": "NODE_ENV",
+      "value": "production",
+      "required": true
+    },
+    {
+      "name": "PORT",
+      "description": "Injected automatically by hosting platform (e.g. 8080 or 3000)",
+      "required": false
+    },
+    {
+      "name": "SQL_HOST",
+      "description": "PostgreSQL host or Cloud SQL Auth Proxy socket path",
+      "required": true
+    },
+    {
+      "name": "SQL_DB_NAME",
+      "description": "PostgreSQL database name",
+      "required": true
+    },
+    {
+      "name": "SQL_USER",
+      "description": "PostgreSQL runtime read/write user",
+      "required": true
+    },
+    {
+      "name": "SQL_PASSWORD",
+      "description": "PostgreSQL runtime user password",
+      "required": true,
+      "secret": true
+    },
+    {
+      "name": "SQL_ADMIN_USER",
+      "description": "PostgreSQL admin user for Drizzle schema push",
+      "required": false
+    },
+    {
+      "name": "SQL_ADMIN_PASSWORD",
+      "description": "PostgreSQL admin password for Drizzle schema push",
+      "required": false,
+      "secret": true
+    },
+    {
+      "name": "RAZORPAY_KEY_ID",
+      "description": "Optional live Razorpay key ID for real payments",
+      "required": false
+    },
+    {
+      "name": "RAZORPAY_KEY_SECRET",
+      "description": "Optional live Razorpay secret",
+      "required": false,
+      "secret": true
+    }
+  ],
+  "recommendedHostingPlatforms": [
+    {
+      "name": "Railway",
+      "configIncluded": "railway.json",
+      "notes": "Supports Node 22, WebSockets, and managed PostgreSQL directly."
+    },
+    {
+      "name": "Render",
+      "serviceType": "Web Service (Node 22+)",
+      "buildCommand": "npm install && npm run build",
+      "startCommand": "npm start",
+      "healthCheckPath": "/health"
+    },
+    {
+      "name": "Google Cloud Run",
+      "notes": "Supports Node 22, Cloud SQL PostgreSQL, and WebSockets."
+    },
+    {
+      "name": "Fly.io / VPS",
+      "notes": "Run npm run build && npm start behind HTTPS reverse proxy with /ws WebSocket upgrade."
+    }
+  ],
+  "firebaseAuthNotes": {
+    "configFile": "firebase-applet-config.json",
+    "actionRequiredForExternalDomain": "Add your new published domain to Firebase Console -> Authentication -> Settings -> Authorized domains so Google Sign-In works on the new URL."
+  }
+}
